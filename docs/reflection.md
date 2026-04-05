@@ -1,0 +1,9 @@
+# Auto-PPT Agent Reflection
+
+## Where did your agent fail its first attempt?
+In the initial iterations, the most common failure mode for the agent was trying to use the tools asynchronously but feeding them synchronous or improperly formatted Langchain inputs. Initially, standard Langchain Tools in a standard sync `AgentExecutor` environment failed to properly block or await the MCP tool responses because `mcp` uses async/await heavily. To fix this, we updated the tools to map precisely into `coroutine` fields of Langchain's `@tool` wrapper so they could be executed via async invocation `ainvoke`. Furthermore, the LLM initially struggled to remember to pass the `filename` argument to every subsequent tool call (like `add_slide`), causing tool execution errors. This was resolved by strengthening the `system_prompt` to be explicit.
+
+## How did MCP prevent you from writing hardcoded scripts?
+Using Model Context Protocol forced a strict decoupling between the "Agent Brain" (which handles planning, inference, and formatting) and the "Execution Engine" (the PowerPoint rendering logic). 
+
+Without MCP, it is very tempting to import `python-pptx` directly into the agent’s execution loop, hardcoding the mapping from Langchain parsing layers directly to Python logic. By utilizing MCP, I only defined JSON schemas for tool inputs (`create_presentation` and `add_slide`). The LLM was strictly restricted to generating structured tool-call representations and sending them over a standard interface. Consequently, the language model never interacts with the actual file system or presentation library—it merely requests actions. This ensures a modular architecture where the `ppt_mcp_server` could easily be reused across different agent ecosystems (like Claude Server, Cursor, etc.) seamlessly.

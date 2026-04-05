@@ -1,5 +1,16 @@
 # ✨ Auto-PPT Agent
 
+You can watch the working demonstration of the Auto-PPT Agent here:
+
+🔗 Google Drive Link:
+https://drive.google.com/drive/folders/1pVm5kZgnj4XGQUj9HY12cTHakvQHEdAo?usp=drive_link
+
+📌 What the Demo Shows
+End-to-end workflow of the Auto-PPT Agent
+Multi-MCP server usage (Web Search, PPT Generator, Filesystem, Image Generator)
+Automatic slide creation from a single prompt
+Generated PowerPoint output
+
 An autonomous AI agent that **researches any topic and generates beautiful PowerPoint presentations** — complete with themed layouts, images, and structured content — all from a single text prompt.
 
 Built with **LangChain**, **Mistral AI**, **MCP (Model Context Protocol)**, **python-pptx**, and **Streamlit**.
